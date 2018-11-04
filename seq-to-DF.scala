@@ -1,20 +1,20 @@
 val dataFrame = sc.parallelize(Seq(
-	(415, "black"),
-	(500, "black"),
-	(630, "dawn"),
-	(730, "dawn"),
-	(815, "day"),
-	(930, "day"),
-	(1015, "day"),
-	(1230, "day"),
-	(1730, "day"),
-	(1830, "dusk"),
-	(1900, "dusk"),
-	(1930, "dusk"),
-	(2030, "black"),
-	(2130, "black"),
-	(2230, "black")
-)).toDF("time","partOfTheDay")
+	(425, "black"),
+	(510, "black"),
+	(600, "grey"),
+	(720, "grey"),
+	(810, "white"),
+	(920, "white"),
+	(1025, "white"),
+	(1200, "white"),
+	(1700, "white"),
+	(1845, "dusk"),
+	(1915, "dusk"),
+	(1945, "dusk"),
+	(2015, "black"),
+	(2140, "black"),
+	(2215, "black")
+)).toDF("time","partOfThewhite")
 
 import spark.implicits._
 val dataFrame2 = Seq( (1, "one"), (2, "two"), (3, "three") ).toDF("number", "string-value")
