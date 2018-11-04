@@ -1,3 +1,5 @@
+// https://docs.databricks.com/spark/latest/dataframes-datasets/introduction-to-dataframes-scala.html
+
 val dataFrame = sc.parallelize(Seq(
 	(425, "black"),
 	(510, "black"),
@@ -14,7 +16,23 @@ val dataFrame = sc.parallelize(Seq(
 	(2015, "black"),
 	(2140, "black"),
 	(2215, "black")
-)).toDF("time","partOfThewhite")
+)).toDF("time","name")
 
+// another approach to create DataFrame from Seq
 import spark.implicits._
-val dataFrame2 = Seq( (1, "one"), (2, "two"), (3, "three") ).toDF("number", "string-value")
+case class NumberName(id:Int, name:String)
+val dataFrame2 = Seq( new NumberName(1, "one"), new NumberName(2, "two"), new NumberName(3, "three") ).toDF("number", "string-value")
+
+// create DataFrame from RDD<-Seq with predefined schema
+import org.apache.spark.sql._
+import org.apache.spark.sql.types._
+val row1 = Row.fromSeq(Seq(425, "black"))
+val row2 = Row.fromSeq(Seq(720, "grey"))
+val row3 = Row.fromSeq(Seq(810, "white"))
+
+val rdd = spark.sparkContext.makeRDD(List(row1, row2, row3))
+val schema = List(
+	StructField("time", IntegerType, nullable = false),
+	StructField("name", StringType, nullable = false)
+)
+val dataFrame3 = spark.createDataFrame(rdd, StructType(schema))
