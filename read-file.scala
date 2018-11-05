@@ -16,3 +16,12 @@ val csvDF = spark.read.format("csv")
 sqlContext.read.format("orc").load(orcfile)
 spark.read.option("inferSchema", true).orc("filepath")
 spark.read.format("org.apache.spark.sql.execution.datasources.orc")
+
+// also accessible next formats spark-sql_*.jar/org/apache/spark/sql/execution/datasources:
+// * csv
+// * jdbc
+// * json
+// * orc
+// * parquet
+// * text
+// * v2
