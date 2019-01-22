@@ -17,6 +17,12 @@ sqlContext.read.format("orc").load(orcfile)
 spark.read.option("inferSchema", true).orc("filepath")
 spark.read.format("org.apache.spark.sql.execution.datasources.orc")
 
+// orc alternative
+val path = "/user/nafochir/labeled_data/preprocessedLabels"
+dfval df = spark.read.orc(path)
+df.head(10).toJSON
+val df3 = df.toJSON.take(10)
+
 // also accessible next formats spark-sql_*.jar/org/apache/spark/sql/execution/datasources:
 // * csv
 // * jdbc
