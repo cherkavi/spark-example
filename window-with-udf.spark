@@ -1,0 +1,32 @@
+val dataFrame = sc.parallelize(Seq(
+	(415, "night"),
+	(500, "night"),
+	(630, "dawn"),
+	(730, "dawn"),
+	(815, "day"),
+	(930, "day"),
+	(1015, "day"),
+	(1230, "day"),
+	(1430, "day"),
+	(1615, "day"),
+	(1730, "day"),
+	(1830, "dusk"),
+	(1900, "dusk"),
+	(1930, "dusk"),
+	(2030, "night"),
+	(2130, "night"),
+	(2230, "night")
+)).toDF("time","partOfTheDay")
+
+val window = org.apache.spark.sql.expressions.Window.orderBy("time")
+
+import org.apache.spark.sql.functions.lag
+
+val combinedFrame = dataFrame.withColumn("before", lag("partOfTheDay",1,0).over(window))
+val doubleCombinedFrame = combinedFrame.withColumn("after", lag("partOfTheDay",-1,0).over(window))
+
+import org.apache.spark.sql.functions.udf
+def isEquals(s1:String, s2:String):Int = if(s1==s2)0 else 1
+val udfIsEquals[Int,String,String] = udf(isEquals(_,_))
+
+val frame = doubleCombinedFrame.withColumn("isStart",udfIsEquals(col("partOfTheDay"),col("before")))
